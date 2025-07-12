@@ -63,7 +63,7 @@ export const Student = () => {
             <p></p>
           </div>
         </div>
-        <div className="con">
+        {/* <div className="con">
           <div className="stat-box total-exams">
             <div className="stat-content">
               <h4>Upcoming Exams</h4>
@@ -95,7 +95,7 @@ export const Student = () => {
             </div>
             <WorkspacePremiumIcon className="stat-icon" />
           </div>
-        </div>
+        </div> */}
 
           
       </div>

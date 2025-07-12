@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Exam.css';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
@@ -6,38 +6,52 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 const upcomingExams = [
   {
     title: 'Mathematics Final Exam',
     subject: 'Advanced Calculus',
-    date: '2024-01-15',
-    time: '10:00 AM',
+    num_of_questions: 10,
+    difficulty_level: 'easy',
+    total_marks: 100,
     duration: '120 min',
-    status: 'upcoming',
-    button: null,
+    button: true,
   },
   {
     title: 'Physics Mid-term',
     subject: 'Quantum Mechanics',
-    date: '2024-01-12',
-    time: '2:00 PM',
+    num_of_questions: 10,
+    difficulty_level: 'medium',
+    total_marks: 100,
     duration: '90 min',
-    status: 'available',
     button: true,
   },
   {
     title: 'Computer Science Quiz',
     subject: 'Data Structures',
-    date: '2024-01-10',
-    time: '9:00 AM',
+    num_of_questions: 10,
+    difficulty_level: 'hard',
+    total_marks: 100,
     duration: '60 min',
-    status: 'available',
     button: true,
   },
 ];
 
 const Exam = () => {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredExams, setFilteredExams] = useState(upcomingExams);
+
+  // Filter exams based on search term
+  const handleSearch = (searchValue) => {
+    setSearchTerm(searchValue);
+    const filtered = upcomingExams.filter(exam => 
+      exam.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.difficulty_level.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredExams(filtered);
+  };
 
   return (
     <div>
@@ -56,65 +70,44 @@ const Exam = () => {
               <span className="tab">Completed <span className="count">2</span></span>
             </div>
             <div className="search-box">
-              <input type="text" placeholder="Search exams..." />
-            </div>
-          </div>
-
-          {/* Summary Boxes */}
-          <div className="exam-summary">
-            <div className="summary-card blue">
-              <div className="icon"><CalendarMonthIcon /></div>
-              <div>
-                <p className="label">Total Exams</p>
-                <h3>6</h3>
-              </div>
-            </div>
-            <div className="summary-card orange">
-              <div className="icon"><AccessTimeIcon /></div>
-              <div>
-                <p className="label">Ongoing</p>
-                <h3>1</h3>
-              </div>
-            </div>
-            <div className="summary-card green">
-              <div className="icon"><EmojiEventsIcon /></div>
-              <div>
-                <p className="label">Completed</p>
-                <h3>2</h3>
-              </div>
-            </div>
-            <div className="summary-card purple">
-              <div className="icon"><MenuBookIcon /></div>
-              <div>
-                <p className="label">Average Score</p>
-                <h3>90%</h3>
-              </div>
+              <input 
+                type="text" 
+                placeholder="Search exams..." 
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
             </div>
           </div>
         </div>
 
         {/* Exam Cards List */}
-        {upcomingExams.map((exam, index) => (
-          <div className="exam-card" key={index}>
-            <div className="exam-info">
-              <h3>{exam.title}</h3>
-              <p className="subject">{exam.subject}</p>
-              <div className="exam-meta">
-                <span><CalendarMonthIcon fontSize="small" /> {exam.date}</span>
-                <span><AccessTimeIcon fontSize="small" /> {exam.time}</span>
-                <span><AccessTimeIcon fontSize="small" /> {exam.duration}</span>
+        {filteredExams.length > 0 ? (
+          filteredExams.map((exam, index) => (
+            <div className="exam-card" key={index}>
+              <div className="exam-info">
+                <h3>{exam.title}</h3>
+                <p className="subject">{exam.subject}</p>
+                <div className="exam-meta">
+                  <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions}</span>
+                  <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks}</span>
+                  <span><AccessTimeIcon fontSize="small" /> {exam.duration}</span>
+                </div>
+                <div className="tags">
+                  <span className={`tag ${exam.difficulty_level}`}>{exam.difficulty_level}</span>
+                </div>
               </div>
-              <div className="tags">
-                <span className={`tag ${exam.status}`}>{exam.status}</span>
-              </div>
+              {exam.button && (
+                <div className="exam-action">
+                  <button className="start-btn" onClick={() => navigate('/rules-chart')}>Start Exam ➤</button>
+                </div>
+              )}
             </div>
-            {exam.button && (
-              <div className="exam-action">
-                <button className="start-btn" onClick={() => navigate('/rules-chart')}>Start Exam ➤</button>
-              </div>
-            )}
+          ))
+        ) : (
+          <div className="no-results">
+            <p>No exams found matching "{searchTerm}"</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
