@@ -1,0 +1,90 @@
+.QB-main {
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.upload-box {
+  width: 1200px;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  margin-top: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.drop-zone:hover {
+  border-color: #7f5fff;
+}
+
+.drop-zone input[type="file"] {
+  display: none;
+}
+
+.upload-icon {
+    font-size: 60px;
+  color: #8e8e8e;
+  margin-bottom: 10px;
+}
+
+.upload-text {
+  color: #7f5fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.file-note {
+  font-size: 13px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  color: black;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.set-btn {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
