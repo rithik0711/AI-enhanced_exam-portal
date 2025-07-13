@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Clock, ChevronLeft, ChevronRight, Flag, CheckCircle, AlertCircle, X, RotateCcw, Send, Camera, CameraOff } from 'lucide-react';
+import { Clock, ChevronLeft, ChevronRight, Flag, CheckCircle, AlertCircle, X, RotateCcw, Send } from 'lucide-react';
 import './ExamInterface.css';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
-import io from 'socket.io-client';
 
 export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -14,14 +13,8 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
   const [showExitDialog, setShowExitDialog] = useState(false);
   
   // Face detection states
-  const [recordingSessionId, setRecordingSessionId] = useState(null);
-  const [isRecording, setIsRecording] = useState(false);
-  const [cameraError, setCameraError] = useState(null);
-  const [faceDetectionAlerts, setFaceDetectionAlerts] = useState([]);
-  const socket = io('http://localhost:5000');
   const socketRef = useRef(null);
 
-  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   // Sample exam data (keep your existing data)
@@ -155,112 +148,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
     };
   }, []);
 
-  // Face detection and camera setup
-  useEffect(() => {
-    startCameraAndRecording();
-    
-    // Cleanup on unmount
-    return () => {
-      stopRecording();
-      stopCamera();
-    };
-  }, []);
-
-  const startCameraAndRecording = async () => {
-    try {
-      // Start camera
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-        audio: false
-      });
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-
-      // Start backend recording
-      const response = await fetch('/api/start-exam-recording', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          examId: examId || 'test-exam',
-          studentId: 'student-123' // Replace with actual student ID
-        })
-      });
-
-      const data = await response.json();
-      
-      if (data.success) {
-        setRecordingSessionId(data.sessionId);
-        setIsRecording(true);
-        console.log('✅ Face detection recording started:', data.sessionId);
-      } else {
-        console.error('❌ Failed to start recording:', data.error);
-        setCameraError('Failed to start exam recording');
-      }
-
-    } catch (error) {
-      console.error('❌ Camera/Recording error:', error);
-      setCameraError('Camera access denied or unavailable');
-    }
-  };
-
-  const stopRecording = async () => {
-    if (recordingSessionId) {
-      try {
-        const response = await fetch('/api/stop-exam-recording', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            sessionId: recordingSessionId
-          })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-          console.log('✅ Recording stopped successfully');
-          setIsRecording(false);
-          setRecordingSessionId(null);
-        }
-      } catch (error) {
-        console.error('❌ Error stopping recording:', error);
-      }
-    }
-  };
-  
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject;
-      const tracks = stream.getTracks();
-      tracks.forEach(track => track.stop());
-    }
-  };
-
-  // Check recording status periodically
-  useEffect(() => {
-    if (recordingSessionId) {
-      const checkStatus = setInterval(async () => {
-        try {
-          const response = await fetch(`/api/recording-status/${recordingSessionId}`);
-          const data = await response.json();
-          
-          if (!data.active) {
-            setIsRecording(false);
-            setRecordingSessionId(null);
-          }
-        } catch (error) {
-          console.error('Error checking recording status:', error);
-        }
-      }, 10000); // Check every 10 seconds
-
-      return () => clearInterval(checkStatus);
-    }
-  }, [recordingSessionId]);
-
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -308,7 +195,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
 
   const handleSubmitExam = async () => {
     // Stop recording before submitting
-    await stopRecording();
+    // await stopRecording(); // Removed camera/recording logic
     
     const score = calculateScore();
     onExamComplete({
@@ -316,8 +203,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
       score,
       answers,
       timeSpent: 3600 - timeLeft,
-      totalQuestions: examData.totalQuestions,
-      recordingSessionId
+      totalQuestions: examData.totalQuestions
     });
   };
 
@@ -429,7 +315,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
               </button>
               <button
                 onClick={async () => {
-                  await stopRecording();
+                  // await stopRecording(); // Removed camera/recording logic
                   navigate('/exam');
                 }}
                 className="btn btn-danger"
@@ -467,33 +353,12 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
           {/* Enhanced Camera Container */}
           <div className="camera-container">
             <div className="camera-wrapper">
-              <video 
-                ref={videoRef}
-                autoPlay 
-                muted 
-                playsInline 
-                className="camera-feed"
-              />
+              {/* Removed video feed */}
               <div className="camera-overlay">
                 <div className="recording-indicator">
-                  {isRecording ? (
-                    <div className="recording-active">
-                      <div className="recording-dot"></div>
-                      <span>Recording</span>
-                    </div>
-                  ) : (
-                    <div className="recording-inactive">
-                      <CameraOff size={16} />
-                      <span>Camera Off</span>
-                    </div>
-                  )}
+                  {/* Removed recording indicator */}
                 </div>
-                {cameraError && (
-                  <div className="camera-error">
-                    <AlertCircle size={16} />
-                    <span>{cameraError}</span>
-                  </div>
-                )}
+                {/* Removed camera error */}
               </div>
             </div>
           </div>

@@ -14,7 +14,7 @@ html.dark body {
   margin-bottom: 20px;
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .exam-filters{
@@ -292,8 +292,7 @@ html.dark body {
 }
 
 html.dark .exam-container h2 {
-  color: #ffffff !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: #000000 !important;
 }
 
 html.dark .exam-filters {
@@ -482,4 +481,108 @@ html.dark .no-results {
 
 html.dark .no-results p {
   color: #e2e8f0;
+}
+
+/* Loading and Error States */
+.loading-state, .error-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.loading-state p {
+  color: #4a5568;
+  font-size: 16px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.error-state p {
+  color: #dc2626;
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  font-weight: 500;
+}
+
+.error-state button {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.error-state button:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+html.dark .loading-state, 
+html.dark .error-state {
+  background: linear-gradient(135deg, #1e1e2e 0%, #16213e 100%);
+  color: #ffffff;
+  border: 1px solid #2d3748;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+html.dark .loading-state p {
+  color: #e2e8f0;
+}
+
+html.dark .error-state p {
+  color: #fca5a5;
+}
+
+/* Topic Tag */
+.tag.topic {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}
+
+html.dark .tag.topic {
+  background-color: #312e81;
+  color: #c7d2fe;
+  border-color: #6366f1;
+}
+
+/* Clear Search Button */
+.clear-search-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+  margin-top: 10px;
+}
+
+.clear-search-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+html.dark .clear-search-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+
+html.dark .clear-search-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
 }

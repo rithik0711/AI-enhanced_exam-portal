@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Exam.css';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
@@ -7,67 +7,135 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-const upcomingExams = [
-  {
-    title: 'Mathematics Final Exam',
-    subject: 'Advanced Calculus',
-    num_of_questions: 10,
-    difficulty_level: 'easy',
-    total_marks: 100,
-    duration: '120 min',
-    button: true,
-  },
-  {
-    title: 'Physics Mid-term',
-    subject: 'Quantum Mechanics',
-    num_of_questions: 10,
-    difficulty_level: 'medium',
-    total_marks: 100,
-    duration: '90 min',
-    button: true,
-  },
-  {
-    title: 'Computer Science Quiz',
-    subject: 'Data Structures',
-    num_of_questions: 10,
-    difficulty_level: 'hard',
-    total_marks: 100,
-    duration: '60 min',
-    button: true,
-  },
-];
 
 const Exam = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredExams, setFilteredExams] = useState(upcomingExams);
+  const [exams, setExams] = useState([]);
+  const [filteredExams, setFilteredExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch exams from backend
+  const fetchExams = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch('http://localhost:5000/student/schedule');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('📥 Received exams data:', data);
+      
+      // Log each exam's timing data
+      data.forEach((exam, index) => {
+        console.log(`📋 Exam ${index + 1}:`, {
+          id: exam.id,
+          title: exam.title,
+          duration: exam.duration,
+          durationType: typeof exam.duration,
+          rawDuration: exam.duration
+        });
+      });
+      
+      setExams(data);
+      setFilteredExams(data);
+    } catch (err) {
+      console.error('❌ Failed to fetch exams:', err);
+      setError('Failed to load exams. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchExams();
+  }, []);
 
   // Filter exams based on search term
   const handleSearch = (searchValue) => {
     setSearchTerm(searchValue);
-    const filtered = upcomingExams.filter(exam => 
+    const filtered = exams.filter(exam => 
       exam.title.toLowerCase().includes(searchValue.toLowerCase()) ||
       exam.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.topic.toLowerCase().includes(searchValue.toLowerCase()) ||
       exam.difficulty_level.toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredExams(filtered);
   };
 
+  // Format duration from HH:MM:SS to readable format
+  const formatDuration = (duration, numQuestions) => {
+    if (!duration || duration === null || duration === undefined || duration === '00:00:00') {
+      // fallback: use numQuestions
+      const mins = parseInt(numQuestions) || 1;
+      return `${mins} min`;
+    }
+    // Convert to string if it's a number
+    const durationStr = String(duration);
+    if (durationStr.includes(':')) {
+      const parts = durationStr.split(':');
+      const hours = parseInt(parts[0]) || 0;
+      const minutes = parseInt(parts[1]) || 0;
+      const totalMinutes = hours * 60 + minutes;
+      return `${totalMinutes} min`;
+    }
+    const numMinutes = parseInt(durationStr);
+    if (!isNaN(numMinutes)) {
+      return `${numMinutes} min`;
+    }
+    return `${durationStr} min`;
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="exam-container">
+          <h2 className='exam-title'>Exams</h2>
+          <div className="loading-state">
+            <p>Loading exams...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <Navbar />
+        <div className="exam-container">
+          <h2 className='exam-title'>Exams</h2>
+          <div className="error-state">
+            <p>{error}</p>
+            <button onClick={fetchExams}>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar />
       <div className="exam-container">
-        <h2>Exams</h2>
+        <h2 className='exam-title'>Exams</h2>
 
         {/* NEW WRAPPER */}
         <div className="exam-stats-wrapper">
           {/* Filter Tabs and Search Bar */}
           <div className="exam-filters">
             <div className="tabs">
-              <span className="tab active">All <span className="count">6</span></span>
-              <span className="tab">Upcoming Exam <span className="count">1</span></span>
-              <span className="tab">Ongoing Exam <span className="count">1</span></span>
-              <span className="tab">Completed <span className="count">2</span></span>
+              <span className="tab active">All <span className="count">{exams.length}</span></span>
+              <span className="tab">Upcoming Exam <span className="count">{exams.filter(exam => exam.status === 'upcoming').length}</span></span>
+              <span className="tab">Ongoing Exam <span className="count">{exams.filter(exam => exam.status === 'ongoing').length}</span></span>
+              <span className="tab">Completed <span className="count">{exams.filter(exam => exam.status === 'completed').length}</span></span>
             </div>
             <div className="search-box">
               <input 
@@ -83,29 +151,31 @@ const Exam = () => {
         {/* Exam Cards List */}
         {filteredExams.length > 0 ? (
           filteredExams.map((exam, index) => (
-            <div className="exam-card" key={index}>
+            <div className="exam-card" key={exam.id || index}>
               <div className="exam-info">
                 <h3>{exam.title}</h3>
                 <p className="subject">{exam.subject}</p>
                 <div className="exam-meta">
-                  <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions}</span>
-                  <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks}</span>
-                  <span><AccessTimeIcon fontSize="small" /> {exam.duration}</span>
+                  <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions} Questions</span>
+                  <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks} Marks</span>
+                  <span><AccessTimeIcon fontSize="small" /> {formatDuration(exam.duration, exam.num_of_questions)}</span>
                 </div>
                 <div className="tags">
                   <span className={`tag ${exam.difficulty_level}`}>{exam.difficulty_level}</span>
+                  <span className="tag topic">{exam.topic}</span>
                 </div>
               </div>
-              {exam.button && (
-                <div className="exam-action">
-                  <button className="start-btn" onClick={() => navigate('/rules-chart')}>Start Exam ➤</button>
-                </div>
-              )}
+              <div className="exam-action">
+                <button className="start-btn" onClick={() => navigate('/rules-chart')}>Start Exam ➤</button>
+              </div>
             </div>
           ))
         ) : (
           <div className="no-results">
             <p>No exams found matching "{searchTerm}"</p>
+            <button onClick={() => handleSearch('')} className="clear-search-btn">
+              Clear Search
+            </button>
           </div>
         )}
       </div>
