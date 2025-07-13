@@ -1,0 +1,210 @@
+/* Container setup */
+.results-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.results-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Performance Intro Section */
+.performance-intro {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+
+.intro-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  border-radius: 50%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(216, 67, 214, 0.15);
+  transition: transform 0.3s ease;
+
+}
+
+.performance-intro h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.performance-intro p {
+  font-size: 1.1rem;
+  color: #4b5563;
+}
+
+/* Search Input Section */
+.srh-containers {
+  margin-bottom: 25px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.filter-labels {
+  font-size: 16px;
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.search-input-wrappers {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  max-width: 400px;
+}
+
+.search-icons {
+  margin-right: 8px;
+  color: #6b7280;
+}
+
+.search-inp {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  color: #111827;
+  width: 100%;
+  margin-left: 20px;
+}
+
+/* Results Table */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #e0e0e0;
+}
+
+.results-table th, .results-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.results-table th {
+  background-color: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.results-table td {
+  font-size: 15px;
+  color: #1f2937;
+}
+
+.subtitle {
+  color: #6b7280;
+}
+
+.date {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.allowed {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* Performance Trend Section */
+.performance-trend {
+  margin-top: 40px;
+  background: #f9fafb;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  color: #666;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+.tropy-icon{
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); */
+  /* transition: transform 0.3s ease; */
+  font-size: 40px !important;
+  color: #fff;
+}
+.trend-placeholder {
+  margin-top: 20px;
+  padding: 30px;
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+/* Dark Mode Support */
+html.dark .results-container,
+html.dark .performance-trend,
+html.dark .search-input-wrappers,
+html.dark .results-table,
+html.dark .trend-placeholder {
+  background-color: #000000;
+  color: #f9fafb;
+}
+/* Fix for performance-intro section in dark mode */
+html.dark .performance-intro h1 {
+  /* background-color: #111827; */
+  color: #ffffff;
+}
+
+/* Fix for results-header h2 in dark mode */
+html.dark .results-header h2 {
+  color: #f9fafb;
+}
+
+html.dark .results-table th,
+html.dark .results-table td,
+html.dark .search-inp {
+  color: #f9fafb;
+}
+
+html.dark .results-table th {
+  background-color: #000000;
+}
+
+html.dark .search-input-wrappers {
+  background-color: #000000;
+  border-color: #4b5563;
+} */
+
+html.dark .trend-placeholder {
+  border-color: #ffffff;
+  background-color: #111827;
+}
+html.dark .srh-containers{
+  background-color: #000000;
+  box-shadow: 0 0 10px #e0e0e0;
+
+} 
+html.dark .search-inp{
+  color: #000000;
+  background-color: #ffffff;
+}
