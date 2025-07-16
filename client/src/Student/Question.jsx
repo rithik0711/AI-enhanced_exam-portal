@@ -90,25 +90,6 @@ useEffect(() => {
       <Navbar />
       <div className="question-bank-content">
         <h1>Question Bank</h1>
-        {/* Header */}
-        <div className="header-section">
-          <div className="header-content">
-            <div className="header-text">
-              <p className="page-description">
-                Practice and master concepts with our comprehensive question sets
-              </p>
-            </div>
-            <div className="view-toggle">
-              <button
-                onClick={() => setViewMode('table')}
-                className={`view-btn ${viewMode === 'table' ? 'view-btn-active' : ''}`}
-              >
-                Table View
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Filters */}
         <div className="filters-section">
           <div className="filters-grid">
@@ -219,7 +200,7 @@ useEffect(() => {
         )}
 
         {/* Study Tips */}
-        <div className="study-tips">
+        {/* <div className="study-tips">
           <div className="tips-header">
             <Lightbulb className="tips-icon" />
             <h3 className="tips-title">Study Tips</h3>
@@ -238,7 +219,7 @@ useEffect(() => {
               <p className="tip-description">Daily revision helps improve your retention and speed.</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </div>

@@ -13,6 +13,7 @@ const examResults = [
     percentage: '92%',
     timeTaken: '115m',
     allowedTime: '120m',
+    status: 'Passed',
   },
   {
     title: 'Physics Mid-term',
@@ -20,17 +21,15 @@ const examResults = [
     date: '2024-01-05',
     score: '88/100',
     percentage: '88%',
-    timeTaken: '87m',
-    allowedTime: '90m',
+    status: 'Passed',
   },
   {
     title: 'Chemistry Quiz',
     subtitle: 'Organic Chemistry',
     date: '2024-01-03',
     score: '95/100',
-    percentage: '95%',
-    timeTaken: '55m',
-    allowedTime: '60m',
+    percentage: '35%',
+    status: 'Passed',
   },
   {
     title: 'Biology Test',
@@ -38,14 +37,29 @@ const examResults = [
     date: '2023-12-28',
     score: '85/100',
     percentage: '85%',
-    timeTaken: '70m',
-    allowedTime: '75m',
+    status: 'Passed',
   },
 ];
 
 const Results = () => {
     const [searchTerm, setSearchTerm] = useState('');
   
+  // Helper to get numeric percentage
+  const getPercentage = (str) => {
+    if (!str) return 0;
+    return parseInt(str.replace('%', ''));
+  };
+
+  // Filter results based on search term
+  const filteredResults = examResults.filter((exam) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      exam.title.toLowerCase().includes(term) ||
+      exam.subtitle.toLowerCase().includes(term) ||
+      (exam.percentage && exam.percentage.toLowerCase().includes(term))
+    );
+  });
+
   return (
     <div>
       <Navbar />
@@ -80,28 +94,29 @@ const Results = () => {
               <th>Exam Details</th>
               <th>Score</th>
               <th>Percentage</th>
-              <th>Time</th>
-              <th>Date</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {examResults.map((exam, index) => (
-              <tr key={index}>
-                <td>
-                  <strong>{exam.title}</strong><br />
-                  <span className="subtitle">{exam.subtitle}</span><br />
-                </td>
-                <td>
-                  <strong>{exam.score}</strong><br />
-                </td>
-                <td><strong>{exam.percentage}</strong></td>
-                <td>
-                  <AccessTimeIcon fontSize="small" /> {exam.timeTaken}
-                  <div className="allowed">({exam.allowedTime} allowed)</div>
-                </td>
-                <td><span className="date">📅 {exam.date}</span></td>
-              </tr>
-            ))}
+            {filteredResults.map((exam, index) => {
+              const percent = getPercentage(exam.percentage);
+              const isPassed = percent >= 50;
+              return (
+                <tr key={index}>
+                  <td>
+                    <strong>{exam.title}</strong><br />
+                    <span className="subtitle">{exam.subtitle}</span><br />
+                  </td>
+                  <td>
+                    <strong>{exam.score}</strong><br />
+                  </td>
+                  <td><strong>{exam.percentage}</strong></td>
+                  <td className={`status-cell ${isPassed ? 'passed' : 'failed'}`}>
+                    <strong>{isPassed ? 'Passed' : 'Failed'}</strong>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

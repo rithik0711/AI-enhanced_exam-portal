@@ -57,29 +57,24 @@ export const Faculty = () => {
     <div className="faculty-root">
       <FacultyNav />
       <div className="faculty-content">
-        <h3>Welcome Back {user.name}!</h3>
-        <p>Manage your question bank and track exam performance from your dashboard.</p>
+        <h3>Welcome Back, {user.name}!</h3>
         <div className="faculty-dashboard">
           <div className="faculty-box faculty-upload-box" onClick={() => navigate('/upload-exam')}>
-            <AddRoundedIcon className="faculty-icon" />
-            <h4>Upload Questions</h4>
-            <p>Create and submit individual questions manually for your exam.</p>
+            <NoteAddIcon className="faculty-icon" />
+            <h4>Schedule Exam</h4>
           </div>
-          <div className="faculty-box faculty-viewques">
+          {/* <div className="faculty-box faculty-viewques">
             <DriveFileRenameOutlineIcon className="faculty-icon purple-icon" />
             <h4>Manage Uploaded Question</h4>
-            <p>View, edit, or delete the questions you've uploaded manually.</p>
-          </div>
+          </div> */}
           <div className="faculty-box faculty-uploadbank" onClick={() => navigate('/question-bank')}>
             <NoteAddIcon className="faculty-icon purple-icon" />
             <h4>Upload Question Bank</h4>
-            <p>Bulk upload a set of questions using a PDF file.</p>
           </div>
-          <div className="faculty-box faculty-viewbank">
+          {/* <div className="faculty-box faculty-viewbank">
             <DriveFileRenameOutlineIcon className="faculty-icon purple-icon" />
             <h4>Manage Question Bank</h4>
-            <p>Browse and manage the full question bank uploaded by you.</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

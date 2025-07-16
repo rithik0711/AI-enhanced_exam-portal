@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Clock, ChevronLeft, ChevronRight, Flag, CheckCircle, AlertCircle, X, RotateCcw, Send } from 'lucide-react';
+import { Clock, ChevronLeft, ChevronRight, CheckCircle, AlertCircle, X, RotateCcw, Send } from 'lucide-react';
 import './ExamInterface.css';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
@@ -8,7 +8,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(1200);
-  const [flaggedQuestions, setFlaggedQuestions] = useState(new Set());
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
   
@@ -183,16 +182,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
     }
   };
 
-  const toggleFlag = (questionIndex) => {
-    const newFlagged = new Set(flaggedQuestions);
-    if (newFlagged.has(questionIndex)) {
-      newFlagged.delete(questionIndex);
-    } else {
-      newFlagged.add(questionIndex);
-    }
-    setFlaggedQuestions(newFlagged);
-  };
-
   const handleSubmitExam = async () => {
     // Stop recording before submitting
     // await stopRecording(); // Removed camera/recording logic
@@ -221,9 +210,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
     if (answers[index] !== undefined) {
       return 'completed';
     }
-    if (flaggedQuestions.has(index)) {
-      return 'flagged';
-    }
     if (index === currentQuestion) {
       return 'current';
     }
@@ -233,7 +219,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'completed': return <CheckCircle className="status-icon" />;
-      case 'flagged': return <Flag className="status-icon" />;
       case 'current': return <div className="current-indicator" />;
       default: return null;
     }
@@ -241,7 +226,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
 
   const answeredCount = Object.keys(answers).length;
   const unansweredCount = examData.questions.length - answeredCount;
-  const flaggedCount = flaggedQuestions.size;
 
   // Submit Dialog
   if (showSubmitDialog) {
@@ -265,10 +249,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
                 <div className="stat-item">
                   <div className="stat-number unanswered">{unansweredCount}</div>
                   <div className="stat-label">Unanswered</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number flagged">{flaggedCount}</div>
-                  <div className="stat-label">Flagged</div>
                 </div>
               </div>
             </div>
@@ -341,27 +321,8 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
               <h1 className="exam-title">{examData.title}</h1>
               <p className="exam-subject">{examData.subject}</p>
             </div>
-            <div className="exam-stats">
-              <span>Question {currentQuestion + 1} of {examData.totalQuestions}</span>
-              <span>•</span>
-              <span>{answeredCount} Answered</span>
-              <span>•</span>
-              <span>{unansweredCount} Remaining</span>
-            </div>
           </div>
           
-          {/* Enhanced Camera Container */}
-          <div className="camera-container">
-            <div className="camera-wrapper">
-              {/* Removed video feed */}
-              <div className="camera-overlay">
-                <div className="recording-indicator">
-                  {/* Removed recording indicator */}
-                </div>
-                {/* Removed camera error */}
-              </div>
-            </div>
-          </div>
           
           <div className="header-right">
             <div className="timer-container">
@@ -418,30 +379,12 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
                   <span>Answered ({answeredCount})</span>
                 </div>
                 <div className="legend-item">
-                  <div className="legend-color flagged"></div>
-                  <span>Flagged ({flaggedCount})</span>
-                </div>
-                <div className="legend-item">
                   <div className="legend-color current"></div>
                   <span>Current</span>
                 </div>
                 <div className="legend-item">
                   <div className="legend-color not-completed"></div>
                   <span>Not Answered ({unansweredCount})</span>
-                </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="progress-section">
-                <div className="progress-header">
-                  <span>Progress</span>
-                  <span>{Math.round((answeredCount / examData.totalQuestions) * 100)}%</span>
-                </div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${(answeredCount / examData.totalQuestions) * 100}%` }}
-                  ></div>
                 </div>
               </div>
 
@@ -465,17 +408,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
                   <h2 className="question-title">
                     Question {currentQuestion + 1}
                   </h2>
-                  <span className="subject-badge">
-                    {examData.subject}
-                  </span>
                 </div>
-                <button
-                  onClick={() => toggleFlag(currentQuestion)}
-                  className={`flag-btn ${flaggedQuestions.has(currentQuestion) ? 'flagged' : ''}`}
-                  title={flaggedQuestions.has(currentQuestion) ? "Remove flag" : "Flag for review"}
-                >
-                  <Flag className="flag-icon" />
-                </button>
               </div>
 
               {/* Question Content */}
@@ -535,12 +468,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
                     <span className="nav-text">
                       {currentQuestion + 1} of {examData.totalQuestions}
                     </span>
-                    <div className="mini-progress">
-                      <div 
-                        className="mini-progress-fill" 
-                        style={{ width: `${((currentQuestion + 1) / examData.totalQuestions) * 100}%` }}
-                      ></div>
-                    </div>
                   </div>
 
                   <button

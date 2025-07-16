@@ -15,7 +15,6 @@ html.dark body {
   font-size: 28px;
   font-weight: 700;
   color: #000000;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .exam-filters{
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
@@ -39,12 +38,6 @@ html.dark body {
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.exam-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
-  border-left: 6px solid #764ba2;
 }
 
 .exam-info h3 {
@@ -145,7 +138,7 @@ html.dark body {
 }
 
 .start-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8b4be6 0%, #973fef 100%);
   border: none;
   color: #ffffff;
   padding: 12px 24px;
@@ -155,12 +148,6 @@ html.dark body {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-}
-
-.start-btn:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
 }
 .exam-filters {
   display: flex;
@@ -190,28 +177,21 @@ html.dark body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.tab:hover {
-  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .tab.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #9825d5 0%, #902fd1 100%);
   color: #ffffff;
   box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
   border: 1px solid rgba(102, 126, 234, 0.3);
 }
 
 .count {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #ffffff;
   border-radius: 9999px;
   padding: 4px 10px;
   margin-left: 8px;
   font-size: 11px;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  border: 1px solid #ffffff;
 }
 
 .search-box input {
@@ -343,15 +323,15 @@ html.dark .tab {
   background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
   color: #e2e8f0;
   border: 1px solid #4a5568;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  /* transition: all 0.3s ease; */
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); */
 }
 
 html.dark .tab:hover {
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  /* transform: translateY(-1px); */
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); */
 }
 
 html.dark .tab.active {
@@ -376,11 +356,6 @@ html.dark .start-btn {
   transition: all 0.3s ease;
 }
 
-html.dark .start-btn:hover {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
-  transform: translateY(-2px);
-}
 html.dark .exam-info .subject {
   background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important;
   color: #ffffff !important;
@@ -435,11 +410,11 @@ html.dark .progress-fill {
 }
 
 /* Enhanced dark mode for exam cards */
-html.dark .exam-card:hover {
+/* html.dark .exam-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
   border-left: 6px solid #8b5cf6;
-}
+} */
 
 /* Enhanced dark mode for search input */
 html.dark .search-box input:focus {
@@ -520,12 +495,12 @@ html.dark .no-results p {
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
 }
-
+/* 
 .error-state button:hover {
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
-}
+} */
 
 html.dark .loading-state, 
 html.dark .error-state {
@@ -571,18 +546,18 @@ html.dark .tag.topic {
   margin-top: 10px;
 }
 
-.clear-search-btn:hover {
+/* .clear-search-btn:hover {
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
-}
+} */
 
 html.dark .clear-search-btn {
   background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
   box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
 }
 
-html.dark .clear-search-btn:hover {
+/* html.dark .clear-search-btn:hover {
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
-}
+} */

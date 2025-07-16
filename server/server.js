@@ -69,3 +69,15 @@ async function callLlama3(prompt) {
 server.listen(5000, () => {
   console.log('🚀 Server started on port 5000');
 });
+
+
+
+app.use(express.json());
+
+const questionGen = require('./Student/questionGen');
+const evaluateAnswers = require('./Student/evaluateAnswers');
+
+app.use('/student', questionGen);
+app.use('/student', evaluateAnswers);
+
+// ...existing code...

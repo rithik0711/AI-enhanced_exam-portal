@@ -97,11 +97,6 @@ export const UploadQn = () => {
           <h1>Upload Questions</h1>
           <h5>Create and manage exam questions for your courses</h5>
 
-          <div className="upload-method">
-            <h3>Upload Method</h3>
-            <button>Manual entry</button>
-          </div>
-
           <div className="subject">
             <div>
               <h3>Subject</h3>

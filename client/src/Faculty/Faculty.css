@@ -18,21 +18,23 @@
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
+  margin-top: 30px;
 }
 
 .faculty-box {
   width: 270px;
   height: 160px;
-  /* background-color: #ffffff; */
-  padding: 20px;
+  padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 6px 12px rgba(238, 169, 255, 0.8);
   cursor: pointer;
-  text-align: left;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(238, 169, 255, 0.8);
 }
 html.dark .faculty-box{
   background-color: #121212;
@@ -72,10 +74,8 @@ html.dark .faculty-box p{
   color: #121212;
 }
 
-.purple-icon {
-  color: #5f5bfa;
-}
 
 .faculty-icon {
-  font-size: 32px !important;
+  font-size: 40px !important;
+  margin-bottom: 10px;
 }

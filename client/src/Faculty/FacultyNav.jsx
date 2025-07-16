@@ -67,7 +67,7 @@ export const FacultyNav = () => {
                         </div>
                         <div className={`faculty-nav-exam ${activeTab === 'upload-exam' ? 'active' : ''}`} onClick={() => { setActiveTab('upload-exam'); navigate('/upload-exam'); }}>
                             <EditNoteIcon />
-                            <p>Upload Exam</p>
+                            <p>Schedule Exam</p>
                         </div>
                         <div className={`faculty-nav-ques ${activeTab === 'question-bank' ? 'active' : ''}`} onClick={() => { setActiveTab('question-bank'); navigate('/question-bank'); }}>
                             <CreditScoreIcon />

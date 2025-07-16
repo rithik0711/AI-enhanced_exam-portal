@@ -11,10 +11,20 @@
     "start": "cd server && npm start",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install"
   },
-  "keywords": ["exam", "portal", "ai", "react", "nodejs"],
+  "keywords": [
+    "exam",
+    "portal",
+    "ai",
+    "react",
+    "nodejs"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.2.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
   }
 }

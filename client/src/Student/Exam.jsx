@@ -126,16 +126,11 @@ const Exam = () => {
       <Navbar />
       <div className="exam-container">
         <h2 className='exam-title'>Exams</h2>
-
-        {/* NEW WRAPPER */}
         <div className="exam-stats-wrapper">
           {/* Filter Tabs and Search Bar */}
           <div className="exam-filters">
             <div className="tabs">
-              <span className="tab active">All <span className="count">{exams.length}</span></span>
-              <span className="tab">Upcoming Exam <span className="count">{exams.filter(exam => exam.status === 'upcoming').length}</span></span>
-              <span className="tab">Ongoing Exam <span className="count">{exams.filter(exam => exam.status === 'ongoing').length}</span></span>
-              <span className="tab">Completed <span className="count">{exams.filter(exam => exam.status === 'completed').length}</span></span>
+              <span className="tab active">All <span className="count">{exams.length}</span></span> 
             </div>
             <div className="search-box">
               <input 
@@ -154,7 +149,6 @@ const Exam = () => {
             <div className="exam-card" key={exam.id || index}>
               <div className="exam-info">
                 <h3>{exam.title}</h3>
-                <p className="subject">{exam.subject}</p>
                 <div className="exam-meta">
                   <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions} Questions</span>
                   <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks} Marks</span>

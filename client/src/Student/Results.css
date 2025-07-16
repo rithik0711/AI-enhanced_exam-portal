@@ -135,6 +135,31 @@
   font-size: 0.8rem;
   color: #9ca3af;
 }
+.status-cell{
+  width: 100px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.status-cell.passed {
+  background-color: #1bb74a;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.status-cell.failed {
+  background-color: #dc5454;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 6px;
+  text-align: center;
+}
 
 /* Performance Trend Section */
 .performance-trend {

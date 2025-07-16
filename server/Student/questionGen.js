@@ -1,22 +1,32 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const router = express.Router();
-const db = require('../db');
-const axios = require('axios');
 
-// Route: Generate questions from schedule_exam row
-// Faculty/fetchPrompt.js
-router.get('/exam-prompt/:id', async (req, res) => {
-    const { id } = req.params;
-    const [rows] = await db.execute(
-      'SELECT subject, topic, num_of_questions, difficulty_level FROM schedule_exam WHERE id = ?',
-      [id]
-    );
-    if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
-  
-    const exam = rows[0];
-    const prompt = `Generate ${exam.num_of_questions} ${exam.difficulty_level} level multiple choice questions on the topic "${exam.topic}" under subject "${exam.subject}". Return the output in JSON format with question, 4 options, and correct answer.`;
-    
-    res.json({ prompt });
-  });
-  
+// POST /student/generate-questions
+router.post('/generate-questions', async (req, res) => {
+  const { subject, topic, numQuestions, level } = req.body;
+
+  // Build the prompt for Llama 3
+  const prompt = `Generate ${numQuestions} multiple-choice questions on the topic "${topic}" in the subject "${subject}" for ${level} level students. Format as JSON: [{"question": "...", "options": ["A", "B", "C", "D"], "answer": "A"}]`;
+
+  try {
+    const ollamaRes = await fetch('http://localhost:11434/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'llama3',
+        prompt,
+        stream: false
+      })
+    });
+    const data = await ollamaRes.json();
+    // The response will be in data.response
+    const questions = JSON.parse(data.response);
+    res.json({ questions });
+  } catch (err) {
+    console.error('Ollama error:', err);
+    res.status(500).json({ error: 'Failed to generate questions' });
+  }
+});
+
 module.exports = router;
