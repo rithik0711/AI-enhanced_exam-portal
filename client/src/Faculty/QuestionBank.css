@@ -128,10 +128,6 @@ html.dark .file-name {
   color: #e2e8f0 !important;
 }
 
-html.dark .button-row {
-  /* no change needed */
-}
-
 html.dark .cancel-btn {
   color: #e2e8f0 !important;
   background: transparent !important;
