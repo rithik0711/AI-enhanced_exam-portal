@@ -136,6 +136,8 @@ const App = () => {
         <Route path="/results-view" element={<ResultsView />} />
         <Route path='/start-exam' element={<ExamInterface />} />
         <Route path='/rules-chart' element={<Rules />}/>
+        {/* <Route path="/exam-interface" element={<ExamInterface />} /> */}
+
       </Routes>
     </Router>
   );

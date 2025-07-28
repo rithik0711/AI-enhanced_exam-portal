@@ -1,102 +1,149 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Clock, ChevronLeft, ChevronRight, CheckCircle, AlertCircle, X, RotateCcw, Send } from 'lucide-react';
 import './ExamInterface.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 
 export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeLeft, setTimeLeft] = useState(1200);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
-  
-  // Face detection states
-  const socketRef = useRef(null);
+  const [examMeta, setExamMeta] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [questions, setQuestions] = useState([]);
 
-  const navigate = useNavigate();
-
-  // Sample exam data (keep your existing data)
-  const examData = {
-    title: 'Physics Mid-term Exam',
-    subject: 'Quantum Mechanics',
-    totalQuestions: 20,
-    duration: 60,
-    questions: [
-      {
-        id: 1,
-        question: "What is the fundamental principle behind the uncertainty principle in quantum mechanics?",
-        options: [
-          "Energy and time cannot be measured simultaneously with perfect accuracy",
-          "Position and momentum cannot be measured simultaneously with perfect accuracy",
-          "Wave and particle nature cannot be observed simultaneously",
-          "Mass and energy are interchangeable"
-        ],
-        correctAnswer: 1
-      },
-      {
-        id: 2,
-        question: "In the double-slit experiment, what happens when we observe which slit the electron passes through?",
-        options: [
-          "The interference pattern remains unchanged",
-          "The interference pattern disappears",
-          "The electron splits into two",
-          "The electron stops moving"
-        ],
-        correctAnswer: 1
-      },
-      {
-        id: 3,
-        question: "What does Schrödinger's wave equation describe?",
-        options: [
-          "The exact position of a particle",
-          "The probability amplitude of finding a particle",
-          "The speed of light in vacuum",
-          "The mass of elementary particles"
-        ],
-        correctAnswer: 1
-      },
-      {
-        id: 4,
-        question: "Which of the following is a characteristic of quantum entanglement?",
-        options: [
-          "Particles move faster than light",
-          "Particles share correlated properties regardless of distance",
-          "Particles can exist in multiple places simultaneously",
-          "Particles have definite positions and velocities"
-        ],
-        correctAnswer: 1
-      },
-      {
-        id: 5,
-        question: "What is the photoelectric effect?",
-        options: [
-          "Emission of electrons when light hits a material",
-          "Absorption of photons by atoms",
-          "Reflection of light from surfaces",
-          "Refraction of light through materials"
-        ],
-        correctAnswer: 0
-      }
-    ]
+  // Helper function to parse duration string to seconds
+  const parseDurationToSeconds = (duration) => {
+    if (!duration) return 1200; // Default 20 minutes
+    
+    if (typeof duration === 'string' && duration.includes(':')) {
+      const parts = duration.split(':');
+      const hours = parseInt(parts[0]) || 0;
+      const minutes = parseInt(parts[1]) || 0;
+      const seconds = parseInt(parts[2]) || 0;
+      return hours * 3600 + minutes * 60 + seconds;
+    }
+    
+    // If it's just a number, assume it's minutes
+    const minutes = parseInt(duration);
+    return minutes * 60;
   };
 
-  // Timer effect
+  // Fallback sample questions
+  const getSampleQuestions = () => {
+    return [
+      {
+        id: 1,
+        question: `Sample question for ${examMeta?.subject || 'this subject'}`,
+        options: ["Option A", "Option B", "Option C", "Option D"],
+        correctAnswer: 0
+      }
+    ];
+  };
+
+  // Generate questions for the current exam
+  const generateQuestionsForExam = async () => {
+    try {
+      if (!examMeta) {
+        console.log('⚠️ No examMeta available for question generation');
+        return;
+      }
+      await generateQuestionsForExamWithData(examMeta);
+    } catch (error) {
+      console.error('❌ Error in generateQuestionsForExam:', error);
+    }
+  };
+
+  // Generate questions with exam data parameter
+  const generateQuestionsForExamWithData = async (examData) => {
+    try {
+      console.log('🤖 Calling backend to generate questions from schedule_exam data:', examData);
+      const response = await fetch(`http://localhost:5000/api/generate-questions-from-schedule/${examData.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Response not OK from your backend:', response.status, errorText);
+        throw new Error(`Failed to generate questions from schedule: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('📝 Questions response from schedule:', data);
+      setQuestions(data || []);
+    } catch (error) {
+      console.error('❌ Error generating questions from schedule:', error);
+      setQuestions(getSampleQuestions(examMeta?.subject, examMeta?.topic));
+    }
+  };
+
+  useEffect(() => {
+    async function fetchExamData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const examDataFromState = location.state?.examData;
+        let examData;
+        if (examDataFromState) {
+          examData = examDataFromState;
+        } else {
+          const res = await fetch('http://localhost:5000/student/schedule');
+          const exams = await res.json();
+          const exam = exams.find(e => e.id === examId);
+          if (!exam) throw new Error('Exam not found');
+          examData = exam;
+        }
+        if (examData.duration) {
+          const durationInSeconds = parseDurationToSeconds(examData.duration);
+          setTimeLeft(durationInSeconds);
+        }
+        setExamMeta(examData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchExamData();
+  }, [examId, location.state]);
+
+  useEffect(() => {
+    if (examMeta) {
+      generateQuestionsForExamWithData(examMeta);
+    }
+  }, [examMeta]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
-          handleSubmitExam();
           return 0;
         }
         return prevTime - 1;
       });
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
-  // Fullscreen and security effects
+  useEffect(() => {
+    const handleBlur = () => alert('⚠️ Switching tabs is not allowed!');
+    window.addEventListener('blur', handleBlur);
+    return () => window.removeEventListener('blur', handleBlur);
+  }, []);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleSubmitExam();
+    }
+  }, [timeLeft]);
+
+  // All hooks at the top
   useEffect(() => {
     const enterFullScreen = () => {
       const el = document.documentElement;
@@ -106,12 +153,12 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
       else if (el.msRequestFullscreen) el.msRequestFullscreen();
     };
 
-    const exitFullScreen = () => {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-    };
+    // const exitFullScreen = () => {
+    //   if (document.exitFullscreen) document.exitFullscreen();
+    //   else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+    //   else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    //   else if (document.msExitFullscreen) document.msExitFullscreen();
+    // };
 
     const isFullScreen = () =>
       document.fullscreenElement || document.webkitFullscreenElement ||
@@ -128,24 +175,62 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
       }
 
       // ESC key handling
-      if (e.key === 'Escape') {
-        if (isFullScreen()) {
-          exitFullScreen();
-        } else {
-          window.history.back();
-        }
-      }
+      // if (e.key === 'Escape') {
+      //   if (isFullScreen()) {
+      //     exitFullScreen();
+      //   } else {
+      //     window.history.back();
+      //   }
+      // }
     };
 
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      if (isFullScreen()) {
-        exitFullScreen();
-      }
+      // if (isFullScreen()) {
+      //   exitFullScreen();
+      // }
     };
   }, []);
+
+  // Dynamic exam data from props or state
+  const examData = {
+    title: examMeta?.title || examMeta?.subject || 'Exam',
+    subject: examMeta?.subject || 'Subject',
+    totalQuestions: examMeta?.num_of_questions || questions.length || 0,
+    duration: examMeta?.duration || '00:30:00',
+    questions: questions
+  };
+
+  // Show loading state while fetching exam data
+  if (loading) {
+    return (
+      <div className="exam-interface">
+        <p>Loading exam...</p>
+      </div>
+    );
+  }
+
+  // Show error state if there's an error
+  if (error) {
+    return (
+      <div className="exam-interface">
+        <p>Error: {error}</p>
+        <button onClick={() => navigate('/exam')}>Go Back</button>
+      </div>
+    );
+  }
+
+  // Show message if no exam data
+  if (!examMeta) {
+    return (
+      <div className="exam-interface">
+        <p>No exam data found.</p>
+        <button onClick={() => navigate('/exam')}>Go Back</button>
+      </div>
+    );
+  }
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -233,9 +318,6 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
       <div className="dialog-overlay">
         <div className="dialog-container">
           <div className="dialog-content">
-            <div className="dialog-icon submit-icon">
-              <Send className="icon-large" />
-            </div>
             <h3 className="dialog-title">Submit Exam?</h3>
             <p className="dialog-text">
               Are you sure you want to submit your exam? This action cannot be undone.
@@ -263,7 +345,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
                 onClick={handleSubmitExam}
                 className="btn btn-primary"
               >
-                <SendIcon className='sub-icon'/>
+                <Send className='sub-icon'/>
                 Submit Exam
               </button>
             </div>
@@ -318,8 +400,8 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
         <div className="header-content">
           <div className="header-left">
             <div className="exam-info">
-              <h1 className="exam-title">{examData.title}</h1>
-              <p className="exam-subject">{examData.subject}</p>
+              <h1 className="exam-subject">{examData.subject}</h1>
+              <h3 className="exam-topic">{examData.topic}</h3>
             </div>
           </div>
           

@@ -160,7 +160,20 @@ const Exam = () => {
                 </div>
               </div>
               <div className="exam-action">
-                <button className="start-btn" onClick={() => navigate('/rules-chart')}>Start Exam ➤</button>
+                <button className="start-btn" onClick={() => navigate('/rules-chart', { 
+                  state: { 
+                    examData: {
+                      id: exam.id,
+                      subject: exam.subject,
+                      topic: exam.topic,
+                      num_of_questions: exam.num_of_questions,
+                      difficulty_level: exam.difficulty_level,
+                      total_marks: exam.total_marks,
+                      duration: exam.duration,
+                      title: exam.title
+                    }
+                  }
+                })}>Start Exam ➤</button>
               </div>
             </div>
           ))

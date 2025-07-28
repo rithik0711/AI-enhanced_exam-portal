@@ -1,20 +1,39 @@
 import React, { useState } from 'react';
 import './Rules.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Rules = () => {
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const examData = location.state?.examData;
 
   const handleSubmit = () => {
     if (agreed) {
-      navigate('/start-exam'); // Replace '/exam' with your actual exam route
+      // Pass the exam data to the exam interface
+      navigate('/start-exam', { 
+        state: { examData: examData }
+      });
     }
   };
 
   return (
     <div className="rules-container">
       <h1 className="rules-title">Exam Rules & Guidelines</h1>
+      
+      {/* Display exam information if available */}
+      {examData && (
+        <div className="exam-info">
+          <h2>{examData.title}</h2>
+          <div className="exam-details">
+            <p><strong>Subject:</strong> {examData.subject}</p>
+            <p><strong>Topic:</strong> {examData.topic}</p>
+            <p><strong>Questions:</strong> {examData.num_of_questions}</p>
+            <p><strong>Level:</strong> {examData.difficulty_level}</p>
+            <p><strong>Duration:</strong> {examData.duration}</p>
+          </div>
+        </div>
+      )}
       <ul className="rules-list">
         <li>Ensure your webcam is active throughout the exam.</li>
         <li>Maintain a stable internet connection.</li>

@@ -5,22 +5,11 @@ import {QuestionBank} from './QuestionBank';
 import './Faculty.css';
 import { useNavigate } from 'react-router-dom';
 // import EditSquareIcon from '@mui/icons-material/EditSquare';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HomeIcon from '@mui/icons-material/Home';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CreditScoreIcon from '@mui/icons-material/CreditScore';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+
+
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 export const Faculty = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
@@ -68,7 +57,7 @@ export const Faculty = () => {
             <h4>Manage Uploaded Question</h4>
           </div> */}
           <div className="faculty-box faculty-uploadbank" onClick={() => navigate('/question-bank')}>
-            <NoteAddIcon className="faculty-icon purple-icon" />
+            <AddToPhotosIcon className="faculty-icon purple-icon" />
             <h4>Upload Question Bank</h4>
           </div>
           {/* <div className="faculty-box faculty-viewbank">

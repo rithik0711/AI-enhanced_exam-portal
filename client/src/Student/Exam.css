@@ -39,7 +39,13 @@ html.dark body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
+.exam-info{
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 .exam-info h3 {
   margin: 0;
   font-size: 20px;
@@ -147,7 +153,6 @@ html.dark body {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
 }
 .exam-filters {
   display: flex;

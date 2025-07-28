@@ -9,6 +9,7 @@ import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SchoolIcon from '@mui/icons-material/School';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 export const FacultyNav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
@@ -78,7 +79,7 @@ export const FacultyNav = () => {
                     {/* Right group */}
                     <div className="faculty-nav-group right">
                         <div className={`faculty-nav-res ${activeTab === 'results-view' ? 'active' : ''}`} onClick={() => { setActiveTab('results-view'); navigate('/results-view'); }}>
-                            <CreditScoreIcon />
+                            <WorkspacePremiumIcon />
                             <p>Result</p>
                         </div>
 

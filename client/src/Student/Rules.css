@@ -14,6 +14,37 @@
   margin-bottom: 20px;
 }
 
+.exam-info {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.exam-info h2 {
+  color: #4b1ab3;
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.exam-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.exam-details p {
+  color: black;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.exam-details strong {
+  color: #006a1e;
+}
+
 .rules-list {
   list-style-type: disc;
   padding-left: 20px;

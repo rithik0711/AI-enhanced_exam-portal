@@ -7,6 +7,8 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import SchoolIcon from '@mui/icons-material/School';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
@@ -64,11 +66,11 @@ export const Navbar = () => {
             <p>Exam</p>
           </div>
           <div className={`question ${activeTab === 'question' ? 'active' : ''}`} onClick={() => {setActiveTab('question');navigate('/question')}}>
-            <EditNoteIcon />
+            <CreditScoreIcon />
             <p>Question Bank</p>
           </div>
           <div className={`res ${activeTab === 'results' ? 'active' : ''}`} onClick={() => {setActiveTab('results');navigate('/results');}}>
-            <CreditScoreIcon />
+            <WorkspacePremiumIcon />
             <p>Result</p>
           </div>
 

@@ -62,7 +62,7 @@ export const QuestionBank = () => {
     <div>
       <FacultyNav />
       <div className='QB-main'>
-        <h1>Upload Questions</h1>
+        <h1>Upload Question Bank</h1>
         <h5>Create and manage exam questions for your courses</h5>
 
         <div className="subject">
