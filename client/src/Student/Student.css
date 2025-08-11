@@ -11,6 +11,7 @@ html.dark body {
 
 /* Layout Container */
 .content {
+  height: 520px;
   padding: 40px;
   margin: 0 auto;
 }
@@ -151,7 +152,9 @@ html.dark body {
 .total-marks {
   background: linear-gradient(135deg, #f97316, #ef4444);
 }
-
+/* html.dark .capital{
+  background-color: #059669;
+} */
 /* Dark Mode Compatibility */
 .dark .box-question,
 .dark .box-result {

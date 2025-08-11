@@ -1,57 +1,73 @@
 const axios = require('axios');
+
 async function generateQuestions(prompt) {
   try {
-    console.log('🟡 [generateQuestions] Sending prompt to Ollama:', prompt);
+    console.log('[generateQuestions] Sending prompt to Ollama...');
     const response = await axios.post('http://localhost:11434/api/generate', {
-      model: "llama3",
+      model: "gemma:2b", // or your model
       prompt,
+      format: "json",
       stream: false
+    }, {
+      timeout: 120000 // 2 minute timeout
     });
-    console.log('🟢 [generateQuestions] Raw Ollama response:', response.data);
+
     if (response.data && response.data.response) {
-      console.log('🟢 [generateQuestions] Ollama response.response:', response.data.response);
+      console.log('[generateQuestions] Received response string:', response.data.response);
+      let questions;
+      
+      try {
+        // First, try to parse the entire response as JSON
+        questions = JSON.parse(response.data.response);
+        console.log('[generateQuestions] Parsed entire response as JSON');
+      } catch (parseError) {
+        console.log('[generateQuestions] Failed to parse entire response, trying to extract JSON...');
+        
+        // Try to extract JSON object or array from the response
+        const jsonMatch = response.data.response.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+        if (jsonMatch) {
+          console.log('[generateQuestions] Extracted JSON:', jsonMatch[0]);
+          questions = JSON.parse(jsonMatch[0]);
+        } else {
+          console.log('[generateQuestions] No JSON found in response');
+          return null;
+        }
+      }
+      
+      // Ensure we have an array of questions
+      if (!Array.isArray(questions)) {
+        questions = [questions];
+      }
+      
+      console.log('[generateQuestions] Successfully processed questions.');
+      return questions;
     } else {
-      console.warn('⚠️ [generateQuestions] Ollama response missing .response field:', response.data);
+      return null;
     }
-    return response.data.response;
   } catch (error) {
-    if (error.response) {
-      console.error('❌ [generateQuestions] Ollama API error:', error.response.status, error.response.data);
-    } else if (error.request) {
-      console.error('❌ [generateQuestions] No response from Ollama API:', error.request);
+    if (error instanceof SyntaxError) {
+      console.error('[generateQuestions] JSON Parsing Error:', error.message);
+    } else if (error.code === 'ECONNABORTED') {
+      console.error('[generateQuestions] Request timed out.');
+    } else if (error.response) {
+      console.error('[generateQuestions] Ollama API error:', error.response.status, error.response.data);
     } else {
-      console.error('❌ [generateQuestions] Error setting up request:', error.message);
+      console.error('[generateQuestions] Error:', error.message);
     }
-    throw new Error('Failed to generate questions from Ollama');
+    return null;
   }
 }
-module.exports = { generateQuestions };
 
+// Generate multiple questions by calling generateQuestions repeatedly
+async function generateMultipleQuestions(prompt, count) {
+  const questions = [];
+  for (let i = 0; i < count; i++) {
+    const result = await generateQuestions(prompt);
+    if (result && result.length > 0) {
+      questions.push(result[0]); // result is always an array
+    }
+  }
+  return questions;
+}
 
-// File: generateQuestions.js
-
-// const axios = require('axios');
-
-// async function generateQuestions(prompt) {
-//   try {
-//     const response = await axios.post('http://localhost:11434/api/generate', {
-//       model: "llama3",
-//       prompt,
-//       // 👇 THE FIX: Add this line to force JSON output
-//       format: "json", 
-//       stream: false
-//     });
-
-//     // Now, response.data.response will be a clean JSON string
-//     console.log('Raw JSON string from Ollama:', response.data.response);
-    
-//     // You can parse it here or in the calling function
-//     return response.data.response;
-
-//   } catch (error) {
-//     console.error('Error generating questions from Ollama:', error);
-//     throw new Error('Failed to generate questions from Ollama');
-//   }
-// }
-
-// module.exports = { generateQuestions };
+module.exports = { generateQuestions, generateMultipleQuestions };

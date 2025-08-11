@@ -87,7 +87,7 @@ html.dark .res {
 .dash:hover, .exam:hover,.question:hover, .res:hover{
   color: #7E22CE;
   background-color: #F3E8FF;
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
 }
 
 html.dark .dash:hover, 
@@ -102,12 +102,12 @@ html.dark .res:hover {
 .question.active,
 .res.active,
 .dash.active {
-  background-color: #ffffff;
+  background-color: #ececec;
   color: #7E22CE; 
   border-radius: 10px;
   padding: 5px 10px;
   transition: background-color 0.3s ease;
-  box-shadow: 0 6px 12px rgba(111, 0, 255, 0.8);
+  /* box-shadow: 0 6px 12px rgba(111, 0, 255, 0.8); */
 }
 
 html.dark .exam.active,

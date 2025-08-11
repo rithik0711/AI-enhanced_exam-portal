@@ -91,7 +91,7 @@ useEffect(() => {
       <div className="question-bank-content">
         <h1>Question Bank</h1>
         {/* Filters */}
-        <div className="filters-section">
+         <div className="filters-section">
           <div className="filters-grid">
             <div className="search-containers">
               <label className="filter-label">Search</label>
