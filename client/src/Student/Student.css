@@ -1,38 +1,38 @@
-/* General Setup */
 body {
   font-family: 'Poppins', sans-serif !important;
   background-color: #f4f4f4;
 }
-
 html.dark body {
   background-color: #000000 !important;
   color: #ffffff !important;
 }
-
-/* Layout Container */
 .content {
   height: 520px;
+  width: 1000px;
   padding: 40px;
   margin: 0 auto;
+  margin-left: -220px;
+  margin-top: 50px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
 }
-
 .wel {
   font-size: 30px;
   margin-bottom: 20px;
+  color: white;
 }
-
 .dark .wel {
   color: #fff;
 }
-
-/* Box Navigation Section */
 .box-name {
   display: flex;
   gap: 40px;
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
-
 .box-exam,
 .box-question,
 .box-result {
@@ -59,33 +59,27 @@ html.dark body {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(111, 0, 255, 0.8);
 }
-
 .box-exam.active,
 .box-question.active,
 .box-result.active {
   outline: 2px solid #6f00ff;
 }
-
 .box-exam {
   background: linear-gradient(to right, #2a23f2, #9f2cf3);
   color: #fff;
 }
-
 .icon {
   font-size: 40px !important;
   margin-bottom: 10px;
 }
-
 .box-name h4 {
   font-size: 24px;
   margin: 5px 0;
 }
-
 .box-name p {
   font-size: 14px;
   margin: 0;
 }
-
 .con {
   display: flex;
   flex-wrap: wrap;
@@ -93,7 +87,6 @@ html.dark body {
   gap: 20px;
   padding: 20px;
 }
-
 .stat-box {
   width: 260px;
   height: 120px;
@@ -106,7 +99,6 @@ html.dark body {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
-
 .stat-box:hover {
   transform: translateY(-5px);
 }
@@ -119,49 +111,83 @@ html.dark body {
   font-size: 16px;
   font-weight: 500;
 }
-
 .stat-value {
   font-size: 28px;
   font-weight: 700;
   margin: 5px 0;
 }
-
 .stat-content span {
   font-size: 14px;
   color: #f0f0f0;
 }
-
 .stat-icon {
   font-size: 35px !important;
   opacity: 0.8;
 }
-
-/* Specific Colors for Each Stat Card */
 .total-exams {
   background: linear-gradient(135deg, #2563eb, #5191f8);
 }
-  
 .avg-score {
   background: linear-gradient(135deg, #059669, #25d69b);
 }
-
 .high-score {
   background: linear-gradient(135deg, #a855f7, #e53eff);
 }
-
 .total-marks {
   background: linear-gradient(135deg, #f97316, #ef4444);
 }
-/* html.dark .capital{
-  background-color: #059669;
-} */
-/* Dark Mode Compatibility */
 .dark .box-question,
 .dark .box-result {
   background-color: #1f1f1f;
   color: #fff;
 }
-
 .dark .stat-box {
   color: #ffffff;
+}
+.con{
+  display: flex;
+  position: relative;
+  height: 75vh;
+  z-index: 1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.con::after{
+  content: "";
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.con1{
+  margin-left: -50px;
+}
+.con5{
+  margin-right: -50px;
+}
+.con2,
+.con4{
+  margin-top: -50px;
+}
+.con1,
+.con2,
+.con3,
+.con4,
+.con5{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* height: 100vh; */
+}
+.con1 img,
+.con2 img,
+.con3 img,
+.con4 img,
+.con5 img{
+  width: 290px;
+  display: flex;
+  border-radius: 10px;
 }

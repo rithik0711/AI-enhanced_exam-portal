@@ -42,15 +42,9 @@ const Login = () => {
         <div className='main3'>
           <img src="/images/img7.jpg" alt="" />
           <img src="/images/img8.jpg" alt="" />
-          <img src="/images/img9.jpg" alt="" />
+          <img src="/images/img21.jpg" alt="" />
           <img src="/images/img14.jpg" alt="" className='last'/>
         </div>
-        {/* <div className='main6'>
-          <img src="/images/img10.jpg" alt="" />
-          <img src="/images/img11.jpg" alt="" />
-          <img src="/images/img12.jpg" alt="" />
-          <img src="/images/img17.jpg" alt="" className='last'/>
-        </div> */}
         <div className='main5'>
           <img src="/images/img13.jpg" alt="" />
           <img src="/images/img14.jpg" alt="" />
