@@ -36,7 +36,7 @@ export const QuestionBank = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/faculty/upload', {
+      const response = await fetch('http://localhost:5050/faculty/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subject, topic, fileName, fileData })
@@ -63,7 +63,7 @@ export const QuestionBank = () => {
       <FacultyNav />
       <div className='QB-main'>
         <h1>Upload Question Bank</h1>
-        <h5>Create and manage exam questions for your courses</h5>
+        {/* <h5>Create and manage exam questions for your courses</h5> */}
 
         <div className="subject">
           <div>

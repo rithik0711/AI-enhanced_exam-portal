@@ -66,16 +66,6 @@ const Results = () => {
       <div className="results-container">
         <div className="results-header">
           <h2>Exam Results</h2>
-        </div>
-        {/* <div className="performance-intro">
-          <div className="intro-icon">
-            <EmojiEventsIcon className='tropy-icon' />
-          </div>
-          <h1>Student Performance</h1>
-          <p>Track your learning journey and celebrate your achievements across all subjects</p>
-        </div> */}
-        <div className="srh-containers">
-          <label className="filter-labels">Search</label>
           <div className="search-input-wrappers">
             <SearchIcon className="search-icons" />
             <input
@@ -83,11 +73,10 @@ const Results = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-inp"
-              placeholder="Search question sets, topics, or tags..."
+              placeholder="Search"
             />
           </div>
         </div>
-
         <table className="results-table">
           <thead>
             <tr>

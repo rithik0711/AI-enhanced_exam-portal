@@ -16,7 +16,7 @@ export default function Question({ user }) {
 useEffect(() => {
   const fetchQuestionBank = async () => {
     try {
-      const res = await fetch('http://localhost:5000/student/question-bank');
+      const res = await fetch('http://localhost:5050/student/question-bank');
  // update path if different
       const data = await res.json();
       setQuestionSets(data);

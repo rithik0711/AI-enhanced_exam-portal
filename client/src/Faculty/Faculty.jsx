@@ -5,12 +5,13 @@ import {QuestionBank} from './QuestionBank';
 import './Faculty.css';
 import { useNavigate } from 'react-router-dom';
 // import EditSquareIcon from '@mui/icons-material/EditSquare';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 
 
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-export const Faculty = () => {
+const Faculty = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
   const navigate = useNavigate();
@@ -53,17 +54,17 @@ export const Faculty = () => {
             <h4>Schedule Exam</h4>
           </div>
           {/* <div className="faculty-box faculty-viewques">
-            <DriveFileRenameOutlineIcon className="faculty-icon purple-icon" />
+            <NoteAddIcon className="faculty-icon purple-icon" />
             <h4>Manage Uploaded Question</h4>
           </div> */}
           <div className="faculty-box faculty-uploadbank" onClick={() => navigate('/question-bank')}>
             <AddToPhotosIcon className="faculty-icon purple-icon" />
             <h4>Upload Question Bank</h4>
           </div>
-          {/* <div className="faculty-box faculty-viewbank">
-            <DriveFileRenameOutlineIcon className="faculty-icon purple-icon" />
-            <h4>Manage Question Bank</h4>
-          </div> */}
+          <div className="faculty-box faculty-viewbank" onClick={() => navigate('/results-view')}>
+            <WorkspacePremiumIcon className="faculty-icon purple-icon" />
+            <h4>Student Result</h4>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,8 @@
 .faculty-content {
-  padding: 40px 80px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .faculty-content h3 {
@@ -16,8 +19,8 @@
 
 .faculty-dashboard {
   display: flex;
+  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
   gap: 25px;
-  flex-wrap: wrap;
   margin-top: 30px;
 }
 
@@ -35,6 +38,32 @@
   transition: all 0.3s ease;
   background-color: #ffffff;
   box-shadow: 0 6px 12px rgba(238, 169, 255, 0.8);
+}
+
+@media (max-width: 1200px) {
+  .faculty-content {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .faculty-content {
+    padding: 24px 16px;
+  }
+  
+  .faculty-content h3 {
+    font-size: 24px;
+  }
+  
+  .faculty-dashboard {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .faculty-box {
+    /* padding: 24px; */
+    min-height: 140px;
+  }
 }
 html.dark .faculty-box{
   background-color: #121212;

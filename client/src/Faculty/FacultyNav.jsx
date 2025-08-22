@@ -10,11 +10,15 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useResponsive } from '../hooks/useResponsive';
 export const FacultyNav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('');
+    const { isMobile, isTablet } = useResponsive();
 
     const toggleTheme = () => setIsDark(prev => !prev);
 
@@ -58,19 +62,29 @@ export const FacultyNav = () => {
                 <h3 className="faculty-title">Exam Portal</h3>
             </div>
 
-            <div className="faculty-header">
+            {/* Mobile Menu Button */}
+            {(isMobile || isTablet) && (
+                <button 
+                    className="faculty-mobile-menu-btn"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    <MenuIcon />
+                </button>
+            )}
+
+            <div className={`faculty-header ${(isMobile || isTablet) ? 'faculty-header-mobile' : ''} ${isMobileMenuOpen ? 'faculty-header-mobile-open' : ''}`}>
                 <div className="faculty-nav">
                     {/* Left group */}
                     <div className="faculty-nav-group">
-                        <div className={`faculty-nav-dash ${activeTab === 'faculty' ? 'active' : ''}`} onClick={() => { setActiveTab('faculty'); navigate('/faculty'); }}>
+                        <div className={`faculty-nav-dash ${activeTab === 'faculty' ? 'active' : ''}`} onClick={() => { setActiveTab('faculty'); navigate('/faculty'); setIsMobileMenuOpen(false); }}>
                             <HomeIcon />
                             <p>Dashboard</p>
                         </div>
-                        <div className={`faculty-nav-exam ${activeTab === 'upload-exam' ? 'active' : ''}`} onClick={() => { setActiveTab('upload-exam'); navigate('/upload-exam'); }}>
+                        <div className={`faculty-nav-exam ${activeTab === 'upload-exam' ? 'active' : ''}`} onClick={() => { setActiveTab('upload-exam'); navigate('/upload-exam'); setIsMobileMenuOpen(false); }}>
                             <EditNoteIcon />
                             <p>Schedule Exam</p>
                         </div>
-                        <div className={`faculty-nav-ques ${activeTab === 'question-bank' ? 'active' : ''}`} onClick={() => { setActiveTab('question-bank'); navigate('/question-bank'); }}>
+                        <div className={`faculty-nav-ques ${activeTab === 'question-bank' ? 'active' : ''}`} onClick={() => { setActiveTab('question-bank'); navigate('/question-bank'); setIsMobileMenuOpen(false); }}>
                             <CreditScoreIcon />
                             <p>Question Bank</p>
                         </div>
@@ -78,7 +92,7 @@ export const FacultyNav = () => {
 
                     {/* Right group */}
                     <div className="faculty-nav-group right">
-                        <div className={`faculty-nav-res ${activeTab === 'results-view' ? 'active' : ''}`} onClick={() => { setActiveTab('results-view'); navigate('/results-view'); }}>
+                        <div className={`faculty-nav-res ${activeTab === 'results-view' ? 'active' : ''}`} onClick={() => { setActiveTab('results-view'); navigate('/results-view'); setIsMobileMenuOpen(false); }}>
                             <WorkspacePremiumIcon />
                             <p>Result</p>
                         </div>
@@ -100,11 +114,11 @@ export const FacultyNav = () => {
                             )}
                         </div>
 
-                        <div className={`faculty-theme-toggle ${isDark ? 'dark' : ''}`} onClick={toggleTheme}>
+                        {/* <div className={`faculty-theme-toggle ${isDark ? 'dark' : ''}`} onClick={toggleTheme}>
                             <LightModeIcon className="sun-faculty-theme-icon" />
                             <DarkModeIcon className="moon-faculty-theme-icon" />
                             <div className="faculty-toggle-thumb" />
-                        </div>
+                        </div> */}
 
                         <button className="faculty-logout-btn" onClick={handleLogout}>
                             <LogoutIcon />

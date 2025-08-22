@@ -20,30 +20,6 @@ export const UploadQn = () => {
   const [timing, setTiming] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [totalMarks, setTotalMarks] = useState('');
-
-  // const addQuestionHandler = () => {
-  //   if (questions.length < 20) {
-  //     setQuestions([...questions, emptyQuestion]);
-  //     setCurrentIndex(questions.length);
-  //   } else {
-  //     alert('Maximum of 20 questions reached.');
-  //   }
-  // };
-
-  // const handleChange = (field, value) => {
-  //   const updated = [...questions];
-  //   if (field === 'question') updated[currentIndex].question = value;
-  //   if (field === 'correctAnswer') updated[currentIndex].correctAnswer = value;
-  //   if (field === 'marks') updated[currentIndex].marks = value;
-  //   setQuestions(updated);
-  // };
-
-  // const handleOptionChange = (index, value) => {
-  //   const updated = [...questions];
-  //   updated[currentIndex].options[index] = value;
-  //   setQuestions(updated);
-  // };
-
   
   // Convert "20" to "00:20:00"
   const convertToSQLTime = (minutes) => {
@@ -71,7 +47,7 @@ export const UploadQn = () => {
     
 
     try {
-      const res = await fetch('http://localhost:5000/faculty/schedule', {
+      const res = await fetch('http://localhost:5050/faculty/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -94,8 +70,8 @@ export const UploadQn = () => {
       <div>
         <FacultyNav />
         <div className="upload-main">
-          <h1>Upload Questions</h1>
-          <h5>Create and manage exam questions for your courses</h5>
+          <h1>Schedule Exam</h1>
+          {/* <h5>Create and manage exam questions for your courses</h5> */}
 
           <div className="subject">
             <div>

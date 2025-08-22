@@ -1,13 +1,19 @@
 .navbar {
   height: 100px;
-  /* width: 1500px; */
   background-color: #ffffff;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: 0;
   padding: 20px;
-  width: 1480px;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
   transition: background-color 0.3s ease;
+  box-sizing: border-box;
+  top: 0px; 
+  /* position: fixed; */
+  /* z-index: 500; */
 }
 
 html.dark .navbar {
@@ -28,25 +34,31 @@ html.dark .navbar {
 .navbar .img svg {
   font-size: 40px;
 }
-.head {
+.navbar-brand {
   display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.head h3 {
+.navbar-brand h3 {
   color: #000;
-  margin-left: 30px;
   font-size: 25px;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
-html.dark .head h3 {
+html.dark .navbar-brand h3 {
   color: #e5e7eb;
 }
 
-.head .nav {
+.nav {
   display: flex;
-  margin-left: 100px;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-links {
+  display: flex;
   align-items: center;
   gap: 40px;
 }
@@ -102,7 +114,7 @@ html.dark .res:hover {
 .question.active,
 .res.active,
 .dash.active {
-  background-color: #ececec;
+  background-color: #f8f8f8;
   color: #7E22CE; 
   border-radius: 10px;
   padding: 5px 10px;
@@ -261,4 +273,153 @@ html.dark .theme-toggle-btn.dark:hover {
 
 html.dark .theme-toggle-btn:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+html.dark .mobile-menu-btn {
+  color: #e5e7eb;
+}
+
+.mobile-menu-btn:hover {
+  background-color: #f3f4f6;
+}
+
+html.dark .mobile-menu-btn:hover {
+  background-color: #374151;
+}
+
+/* Responsive Navigation */
+@media (max-width: 1200px) {
+  .navbar {
+    padding: 16px;
+  }
+  
+  .nav {
+    gap: 24px;
+  }
+  
+  .nav-links {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    padding: 12px;
+  }
+  
+  .nav {
+    gap: 20px;
+  }
+  
+  .nav-links {
+    gap: 20px;
+  }
+  
+  .navbar-brand h3 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    min-height: 80px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .navbar-brand {
+    justify-content: space-between;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .nav {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .nav-mobile {
+    display: flex;
+  }
+  
+  .nav-mobile-open {
+    display: flex;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .dash, .exam, .question, .res {
+    justify-content: center;
+    padding: 12px;
+    height: auto;
+    min-height: 48px;
+  }
+  
+  .user {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .profile-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    right: auto;
+    width: 90vw;
+    max-width: 400px;
+    z-index: 1000;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px;
+  }
+  
+  .navbar-brand h3 {
+    font-size: 20px;
+  }
+  
+  .nav {
+    gap: 12px;
+  }
+  
+  .nav-links {
+    gap: 12px;
+  }
+  
+  .dash, .exam, .question, .res {
+    padding: 10px;
+    min-height: 44px;
+  }
+  
+  .dash p, .exam p, .question p, .res p {
+    font-size: 16px;
+  }
 }

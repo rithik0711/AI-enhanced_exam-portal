@@ -1,25 +1,206 @@
-import React from 'react'
-import FacultyNav from './FacultyNav';
-export const ResultsView = () => {
-  return (
-    <div>
-      <FacultyNav />
-      <h2>Student Results</h2>
-      <div>
-        <div>
-          <div>
-            <h4>Search</h4>
-            <input type="text" />
-          </div>
-          <div>
-            <h5 className='filter-title'>Filter</h5>
-            <select name="" id=""></select>
+import React, { useState, useEffect } from 'react';
+import './ResultsView.css';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './FacultyNav';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
+export const ResultsView = () => {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [exams, setExams] = useState([]);
+  const [filteredExams, setFilteredExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const handleDelete = async (id) =>{
+    if (!window.confirm("Are you sure you want to delete this exam?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:5050/student/schedule/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete exam with ID ${id}`);
+      }
+
+      // ✅ Remove from local state
+      setExams(prevExams => prevExams.filter(exam => exam.id !== id));
+      setFilteredExams(prevFiltered => prevFiltered.filter(exam => exam.id !== id));
+
+      alert("Exam deleted successfully ✅");
+    } catch (err) {
+      console.error("❌ Error deleting exam:", err);
+      alert("Failed to delete exam. Please try again.");
+    }
+  }
+  // const handleEdit = () => {
+    
+  // }
+  // Fetch exams from backend
+  const fetchExams = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch('http://localhost:5050/student/schedule');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('📥 Received exams data:', data);
+      
+      // Log each exam's timing data
+      data.forEach((exam, index) => {
+        console.log(`📋 Exam ${index + 1}:`, {
+          id: exam.id,
+          title: exam.title,
+          duration: exam.duration,
+          durationType: typeof exam.duration,
+          rawDuration: exam.duration
+        });
+      });
+      
+      setExams(data);
+      setFilteredExams(data);
+    } catch (err) {
+      console.error('❌ Failed to fetch exams:', err);
+      setError('Failed to load exams. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchExams();
+  }, []);
+
+  // Filter exams based on search term
+  const handleSearch = (searchValue) => {
+    setSearchTerm(searchValue);
+    const filtered = exams.filter(exam => 
+      exam.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.topic.toLowerCase().includes(searchValue.toLowerCase()) ||
+      exam.difficulty_level.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredExams(filtered);
+  };
+
+  // Format duration from HH:MM:SS to readable format
+  const formatDuration = (duration, numQuestions) => {
+    if (!duration || duration === null || duration === undefined || duration === '00:00:00') {
+      // fallback: use numQuestions
+      const mins = parseInt(numQuestions) || 1;
+      return `${mins} min`;
+    }
+    // Convert to string if it's a number
+    const durationStr = String(duration);
+    if (durationStr.includes(':')) {
+      const parts = durationStr.split(':');
+      const hours = parseInt(parts[0]) || 0;
+      const minutes = parseInt(parts[1]) || 0;
+      const totalMinutes = hours * 60 + minutes;
+      return `${totalMinutes} min`;
+    }
+    const numMinutes = parseInt(durationStr);
+    if (!isNaN(numMinutes)) {
+      return `${numMinutes} min`;
+    }
+    return `${durationStr} min`;
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="exam-container">
+          <h2 className='exam-title'>Exams</h2>
+          <div className="loading-state">
+            <p>Loading exams...</p>
           </div>
         </div>
       </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div>
+        <Navbar />
+        <div className="exam-container">
+          <h2 className='exam-title'>Exams</h2>
+          <div className="error-state">
+            <p>{error}</p>
+            <button onClick={fetchExams}>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div>
+      <Navbar />
+      <div className="exam-con">
+        <div className="exam-filter">
+          <h2 className='exam-title'>Student Results</h2>
+          <div className="search-bar">
+            <input 
+              type="text" 
+              placeholder="Search exams..." 
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Exam Cards List */}
+        {filteredExams.length > 0 ? (
+          filteredExams.map((exam, index) => (
+            <div className="exam-cards" key={exam.id || index}>
+              <div className="exam-infos">
+                <h3>{exam.title}</h3>
+                <div className="exam-meta">
+                  <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions} Questions</span>
+                  <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks} Marks</span>
+                  <span><AccessTimeIcon fontSize="small" /> {formatDuration(exam.duration, exam.num_of_questions)}</span>
+                </div>
+                <div className="tags">
+                  <span className={`tag ${exam.difficulty_level}`}>{exam.difficulty_level}</span>
+                  <span className="tag topic">{exam.topic}</span>
+                </div>
+              </div>
+              <div className='button'>
+                {/* <div className='edit'>
+                  <button className='edit-btn'>Edit</button>
+                </div> */}
+                <div className='delete' onClick={()=> handleDelete(exam.id)}>
+                  <button className='del-btn'>Delete</button>
+                </div>
+                <div className="views">
+                  <button className="view-btn">View Results</button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="no-results">
+            <p>No exams found matching "{searchTerm}"</p>
+            <button onClick={() => handleSearch('')} className="clear-search-btn">
+              Clear Search
+            </button>
+          </div>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
+
 export default ResultsView;

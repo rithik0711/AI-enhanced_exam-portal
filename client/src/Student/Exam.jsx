@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Exam.css';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import PageWrapper from '../components/PageWrapper';
+import { useResponsive } from '../hooks/useResponsive';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
@@ -10,6 +12,7 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 const Exam = () => {
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useResponsive();
   const [searchTerm, setSearchTerm] = useState('');
   const [exams, setExams] = useState([]);
   const [filteredExams, setFilteredExams] = useState([]);
@@ -21,7 +24,7 @@ const Exam = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:5000/student/schedule');
+      const response = await fetch('http://localhost:5050/student/schedule');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -94,12 +97,13 @@ const Exam = () => {
     return (
       <div>
         <Navbar />
-        <div className="exam-container">
+        <PageWrapper>
           <h2 className='exam-title'>Exams</h2>
           <div className="loading-state">
             <p>Loading exams...</p>
+            {/* <Loading /> */}
           </div>
-        </div>
+        </PageWrapper>
       </div>
     );
   }
@@ -108,7 +112,7 @@ const Exam = () => {
     return (
       <div>
         <Navbar />
-        <div className="exam-container">
+        <PageWrapper>
           <h2 className='exam-title'>Exams</h2>
           <div className="error-state">
             <p>{error}</p>
@@ -116,7 +120,7 @@ const Exam = () => {
               Retry
             </button>
           </div>
-        </div>
+        </PageWrapper>
       </div>
     );
   }
@@ -124,7 +128,7 @@ const Exam = () => {
   return (
     <div>
       <Navbar />
-      <div className="exam-container">
+      <PageWrapper>
         <h2 className='exam-title'>Exams</h2>
         <div className="exam-stats-wrapper">
           {/* Filter Tabs and Search Bar */}
@@ -145,38 +149,40 @@ const Exam = () => {
 
         {/* Exam Cards List */}
         {filteredExams.length > 0 ? (
-          filteredExams.map((exam, index) => (
-            <div className="exam-card" key={exam.id || index}>
-              <div className="exam-info">
-                <h3>{exam.title}</h3>
-                <div className="exam-meta">
-                  <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions} Questions</span>
-                  <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks} Marks</span>
-                  <span><AccessTimeIcon fontSize="small" /> {formatDuration(exam.duration, exam.num_of_questions)}</span>
+          <div className={`exam-cards-grid ${isMobile ? 'exam-cards-mobile' : ''}`}>
+            {filteredExams.map((exam, index) => (
+              <div className="exam-card" key={exam.id || index}>
+                <div className="exam-info">
+                  <h3>{exam.title}</h3>
+                  <div className="exam-meta">
+                    <span><FormatListNumberedIcon fontSize="small" /> {exam.num_of_questions} Questions</span>
+                    <span><EmojiEventsIcon fontSize="small" /> {exam.total_marks} Marks</span>
+                    <span><AccessTimeIcon fontSize="small" /> {formatDuration(exam.duration, exam.num_of_questions)}</span>
+                  </div>
+                  <div className="tags">
+                    <span className={`tag ${exam.difficulty_level}`}>{exam.difficulty_level}</span>
+                    <span className="tag topic">{exam.topic}</span>
+                  </div>
                 </div>
-                <div className="tags">
-                  <span className={`tag ${exam.difficulty_level}`}>{exam.difficulty_level}</span>
-                  <span className="tag topic">{exam.topic}</span>
-                </div>
-              </div>
-              <div className="exam-action">
-                <button className="start-btn" onClick={() => navigate('/rules-chart', { 
-                  state: { 
-                    examData: {
-                      id: exam.id,
-                      subject: exam.subject,
-                      topic: exam.topic,
-                      num_of_questions: exam.num_of_questions,
-                      difficulty_level: exam.difficulty_level,
-                      total_marks: exam.total_marks,
-                      duration: exam.duration,
-                      title: exam.title
+                <div className="exam-action">
+                  <button className="start-btn" onClick={() => navigate('/rules-chart', { 
+                    state: { 
+                      examData: {
+                        id: exam.id,
+                        subject: exam.subject,
+                        topic: exam.topic,
+                        num_of_questions: exam.num_of_questions,
+                        difficulty_level: exam.difficulty_level,
+                        total_marks: exam.total_marks,
+                        duration: exam.duration,
+                        title: exam.title
+                      }
                     }
-                  }
-                })}>Start Exam ➤</button>
+                  })}>Start Exam ➤</button>
+                </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
           <div className="no-results">
             <p>No exams found matching "{searchTerm}"</p>
@@ -185,7 +191,7 @@ const Exam = () => {
             </button>
           </div>
         )}
-      </div>
+      </PageWrapper>
     </div>
   );
 };

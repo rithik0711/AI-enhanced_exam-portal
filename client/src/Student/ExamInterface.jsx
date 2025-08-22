@@ -63,7 +63,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
   const generateQuestionsForExamWithData = async (examData) => {
     try {
       console.log('🤖 Calling backend to generate questions from schedule_exam data:', examData);
-      const response = await fetch(`http://localhost:5000/api/generate-questions-from-schedule/${examData.id}`, {
+      const response = await fetch(`http://localhost:5050/api/generate-questions-from-schedule/${examData.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default function ExamInterface({ examId, onExamComplete, onExitExam }) {
         if (examDataFromState) {
           examData = examDataFromState;
         } else {
-          const res = await fetch('http://localhost:5000/student/schedule');
+          const res = await fetch('http://localhost:5050/student/schedule');
           const exams = await res.json();
           const exam = exams.find(e => e.id === examId);
           if (!exam) throw new Error('Exam not found');

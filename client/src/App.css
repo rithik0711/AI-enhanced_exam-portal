@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import './responsive.css';
+
 .app{
   position: relative;
+  min-height: 100vh;
 }
+
 body{
   background-color: white;
   margin: 0;
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 .head .img{
   width: 40px;
@@ -67,24 +72,51 @@ button {
   background-color: rgb(255, 255, 255);
   color: black;
   border-radius: 10px;
-  height: 520px;
-  width: 380px;
-  padding: 10px;
+  min-height: 520px;
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
   justify-content: center;
   align-items: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.35); 
   text-align: center;
-  margin-right: 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .main {
+    max-width: 100%;
+    padding: 16px;
+    min-height: 480px;
+  }
 }
 
 .container{
-  margin-bottom: -200px !important;
-  margin-left: 20%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2; /* Ensures it's above body-main */
+  margin-bottom: 0 !important;
+  margin-left: 0;
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+  }
 }
 
 .head{
@@ -168,12 +200,32 @@ button {
   }
 .body-main{
   display: flex;
-  height: 100vh;
-  gap: 120px;
+  min-height: 100vh;
+  gap: 20px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   position: relative;
   z-index: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .body-main {
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .body-main {
+    gap: 12px;
+    padding: 12px;
+    flex-direction: column;
+  }
 }
 .body-main::after {
   content: "";
@@ -190,53 +242,44 @@ button {
 .main3,
 .main4,
 .main5{
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
+  flex: 1;
+  min-width: 150px;
 }
 
-.main1{
-  margin-left: -50px;
-}
-/* .main1,
-.main3,
-.main5{
-  margin-bottom: 0px;
-}
-.main5{
-  margin-right: 0px;
-} */
-.main2,
-.main5{
-  margin-top: -70px;
-}
-.main1 img{
-  width: 300px;
-  height: 200px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-.main2 img{
-  width: 300px;
-  height: 200px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-.main3 img{
-  width: 300px;
-  height: 200px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-.main4 img{
-  width: 300px;
-  height: 200px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
+.main1 img,
+.main2 img,
+.main3 img,
+.main4 img,
 .main5 img{
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  min-height: 150px;
   margin-bottom: 15px;
   border-radius: 10px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .main1,
+  .main2,
+  .main3,
+  .main4,
+  .main5 {
+    max-width: 100%;
+    min-width: auto;
+  }
+  
+  .main1 img,
+  .main2 img,
+  .main3 img,
+  .main4 img,
+  .main5 img {
+    max-width: 100%;
+    min-height: 120px;
+  }
 }
 .soc-media{
   margin-top: 10px;

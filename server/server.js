@@ -1,9 +1,8 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-const { spawn } = require('child_process');
-const path = require('path');
 const socketIo = require('socket.io');
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
@@ -14,7 +13,6 @@ const io = socketIo(server, {
 // Import your Gemini function and Services
 const { generateQuestionsWithGemini } = require('./Ollama/generateQuestionsWithGemini');
 const SchedulePromptService = require('./Ollama/schedulePromptService');
-const PromptService = require('./Ollama/promptService');
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
@@ -23,6 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // 🟢 Routes
 const scheduleExamRoute = require('./Faculty/scheduleExam');
 const uploadQBRoute = require('./Faculty/uploadQB');
+const modifyExamRoute = require('./Faculty/ModifyExam');
 const fetchQBRoute = require('./Student/fetchQB');
 const scheduleFetchRoute = require('./Student/fetchSchedule');
 const questionGen = require('./Student/questionGen');
@@ -32,6 +31,7 @@ app.use('/faculty', scheduleExamRoute);
 app.use('/faculty', uploadQBRoute);
 app.use('/student', fetchQBRoute);
 app.use('/', scheduleFetchRoute);
+app.use('/', modifyExamRoute);
 app.use('/student', questionGen);
 app.use('/student', evaluateAnswers);
 
@@ -90,16 +90,38 @@ app.post('/api/generate-questions-from-schedule/:examId', async (req, res) => {
   }
 });
 
-// Other endpoints (no changes needed)
-app.post('/api/generate-questions-db', async (req, res) => { /* ... */ });
-app.get('/api/prompts', async (req, res) => { /* ... */ });
-app.post('/api/prompts', async (req, res) => { /* ... */ });
-app.put('/api/prompts/:id', async (req, res) => { /* ... */ });
-app.delete('/api/prompts/:id', async (req, res) => { /* ... */ });
-app.get('/api/exam-details/:examId', async (req, res) => { /* ... */ });
+// Other endpoints (return Not Implemented until wired up)
+app.post('/api/generate-questions-db', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
+app.get('/api/prompts', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
+app.post('/api/prompts', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
+app.put('/api/prompts/:id', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
+app.delete('/api/prompts/:id', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
+app.get('/api/exam-details/:examId', async (req, res) => {
+  res.status(501).json({ error: 'Not implemented' });
+});
 
 // ❌ REMOVE THE DUPLICATE ROUTE DEFINITION THAT WAS HERE
 
-server.listen(5000, () => {
-  console.log('🚀 Server started on port 5000');
+const PORT = process.env.PORT || 5050;
+server.listen(PORT, () => {
+  console.log(`🚀 Server started on port ${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err && err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use. Set a different PORT or free the port.`);
+  } else {
+    console.error('❌ Server error:', err);
+  }
+  process.exit(1);
 });

@@ -11,12 +11,14 @@ import UploadQn from './Faculty/UploadQn';
 import QuestionBank from './Faculty/QuestionBank';
 import { jwtDecode } from "jwt-decode";
 import SchoolIcon from '@mui/icons-material/School';
-import { ResultsView } from './Faculty/ResultsView';
+import  ResultsView  from './Faculty/ResultsView'; 
 import  ExamInterface  from './Student/ExamInterface';
 import  Rules  from './Student/Rules';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import { DisplayResults } from './Faculty/DisplayResults';
+import { ResponsiveProvider } from './components/ResponsiveWrapper';
 const Login = () => {
   const navigate = useNavigate();
 
@@ -156,23 +158,24 @@ const Login = () => {
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/student" element={<Student />} />
-        <Route path="/faculty" element={<Faculty />} />
-        <Route path='/question' element={<Question />}/>
-        <Route path="/exam" element={<Exam />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/upload-exam" element={<UploadQn />} />
-        <Route path='/question-bank' element={<QuestionBank />}/>
-        <Route path="/results-view" element={<ResultsView />} />
-        <Route path='/start-exam' element={<ExamInterface />} />
-        <Route path='/rules-chart' element={<Rules />}/>
-        {/* <Route path="/exam-interface" element={<ExamInterface />} /> */}
-
-      </Routes>
-    </Router>
+    <ResponsiveProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/student" element={<Student />} />
+          <Route path="/faculty" element={<Faculty />} />
+          <Route path='/question' element={<Question />}/>
+          <Route path="/exam" element={<Exam />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/upload-exam" element={<UploadQn />} />
+          <Route path='/question-bank' element={<QuestionBank />}/>
+          <Route path="/results-view" element={<ResultsView />} />
+          <Route path='/start-exam' element={<ExamInterface />} />
+          <Route path='/rules-chart' element={<Rules />}/>
+          <Route path='/display-results' element={<DisplayResults />} />
+        </Routes>
+      </Router>
+    </ResponsiveProvider>
   );
 };
 
