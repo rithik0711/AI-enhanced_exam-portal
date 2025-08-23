@@ -9,7 +9,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-
+import Loading from './Loading';
+import Dotted from './Dotted';
 const Exam = () => {
   const navigate = useNavigate();
   const { isMobile, isTablet } = useResponsive();
@@ -100,14 +101,17 @@ const Exam = () => {
         <PageWrapper>
           <h2 className='exam-title'>Exams</h2>
           <div className="loading-state">
-            <p>Loading exams...</p>
-            {/* <Loading /> */}
+            <Dotted />
           </div>
         </PageWrapper>
       </div>
     );
   }
-
+  // if(loading){
+  //   return(
+  //     <Dotted />
+  //   )
+  // }
   if (error) {
     return (
       <div>

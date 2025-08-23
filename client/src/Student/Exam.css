@@ -580,7 +580,10 @@ html.dark .no-results p {
 }
 
 /* Loading and Error States */
-.loading-state, .error-state {
+.loading-state,
+.error-state {
+  /* width: 50px;
+  height: 50px; */
   text-align: center;
   padding: 40px 20px;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
@@ -591,13 +594,10 @@ html.dark .no-results p {
   backdrop-filter: blur(10px);
 }
 
-.loading-state p {
-  color: #4a5568;
-  font-size: 16px;
-  margin: 0;
-  font-weight: 500;
+.loading-state {
+  width: 50px;
+  height: 50px;
 }
-
 .error-state p {
   color: #dc2626;
   font-size: 16px;

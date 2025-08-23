@@ -174,16 +174,17 @@ html.dark .logout {
 
 .profile-box {
   position: absolute;
-  margin-top: 45px;
+  margin-top: 20px;
   margin-right: -170px;
   right: 250px;
-  width: 500px;
+  font-size: 10px;
   display: flex;
+  color: #7E22CE;
   align-items: center;
   flex-direction: column;
+  gap: 20px !important;
   background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(114, 54, 255, 0.324);
   border-radius: 8px;
   z-index: 10;
   transition: all 0.3s ease;
@@ -341,13 +342,8 @@ html.dark .mobile-menu-btn:hover {
     gap: 16px;
     padding: 16px;
   }
-  
-  .navbar-brand {
-    justify-content: space-between;
-  }
-  
   .mobile-menu-btn {
-    display: block;
+    display: none;
   }
   
   .nav {
@@ -358,11 +354,11 @@ html.dark .mobile-menu-btn:hover {
   }
   
   .nav-mobile {
-    display: flex;
+    display: none;
   }
   
   .nav-mobile-open {
-    display: flex;
+    display: none;
   }
   
   .nav-links {

@@ -31,12 +31,6 @@ html.dark body {
   }
 }
 
-@media (max-width: 768px) {
-  .content {
-    padding: 24px 16px;
-    min-height: auto;
-  }
-}
 .wel {
   font-size: 30px;
   margin-bottom: 20px;
@@ -81,6 +75,23 @@ html.dark body {
   .box-result {
     padding: 20px;
     min-height: 140px;
+  }
+  .content {
+    padding: 24px 16px;
+    min-height: auto;
+  }
+  .animation{
+    display: none !important;
+  }
+  .con {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .stat-box {
+    padding: 16px;
+    min-height: 100px;
   }
 }
 .box-question,
@@ -134,18 +145,6 @@ html.dark body {
   transition: transform 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .con {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 16px;
-  }
-  
-  .stat-box {
-    padding: 16px;
-    min-height: 100px;
-  }
-}
 .stat-box:hover {
   transform: translateY(-5px);
 }

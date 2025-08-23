@@ -107,7 +107,7 @@ export const Navbar = () => {
             {isOpen && (
               <div className="profile-box">
                 <p>Name: {user.name}</p>
-                <p>Email: {user.email}</p>
+                {/* <p>Email: {user.email}</p> */}
                 <p>Department: {user.department}</p>
                 <button className="close-btn" onClick={() => setIsOpen(false)}>
                   <CloseIcon />
